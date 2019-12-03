@@ -1,0 +1,29 @@
+#include <iostream>
+//uso biblioteca cctype para usar la funcion islower
+#include<cctype>
+using namespace std;
+
+int main() {
+	
+	int num1, num2;
+
+	while (num1 = num2)
+		{
+		cout << "Ingrese un numero" << endl;
+		cin >> num1;
+		cout << "Ingrese otro numero" << endl;
+		cin >> num2;
+		for (int i = num1; i <= num2;i++)
+		{
+			int
+			if (i % 6 = 0) 
+			{
+			}
+		}
+	
+		}
+
+
+	
+	return 0;
+}
