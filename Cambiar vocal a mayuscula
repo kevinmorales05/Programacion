@@ -1,0 +1,50 @@
+
+
+#include <iostream>
+//uso biblioteca cctype para usar la funcion islower
+#include<cctype>
+using namespace std;
+
+int main() {
+	//declaro la variable y le inicializo
+char vocal = 'a';
+
+	while (vocal != '0') 
+	{
+	cout << "Ingrese una vocal en minúscula: " << endl;
+	cin >> vocal;
+			if (islower(vocal)) 
+			{
+				switch (vocal)
+				{
+	case 'a':
+		cout << 'A' << endl;
+		break;
+	case 'e':
+		cout << 'E' << endl;
+		break;
+	case 'i':
+		cout << 'I' << endl;
+		break;
+	case 'o':
+		cout << 'O' << endl;
+		break;
+	case 'u':
+		cout << 'U' << endl;
+		break;
+
+	default:
+		cout << "Por favor escriba una vocal en minuscula" << endl;
+		break;
+				}
+
+			}
+			
+			else 
+			{
+		cout << "Escriba una vocal en minuscula" << endl;
+			}
+	}
+	
+	return 0;
+}
