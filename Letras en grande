@@ -1,0 +1,68 @@
+//Subprogramas
+#include <iostream>
+using namespace std;
+void mostrarH();
+void mostrarO();
+void mostrarL();
+void mostrarA();
+void mostrarM();
+
+int main()
+{
+	 mostrarH();
+	mostrarO();
+	 mostrarL();
+	 mostrarA();
+	cout << endl << endl;
+	 mostrarM();
+	 mostrarA();
+	 mostrarM();
+	 mostrarA();
+	return 0;
+}
+
+void mostrarH() 
+{
+	cout << "*   *" << endl;
+	cout << "*   *" << endl;
+	cout << "*****" << endl;
+	cout << "*   *" << endl;
+	cout << "*   *" << endl;
+	cout << endl;
+}
+void mostrarO()
+{
+	cout << "*****" << endl;
+	cout << "*   *" << endl;
+	cout << "*   *" << endl;
+	cout << "*   *" << endl;
+	cout << "*****" << endl;
+	cout << endl;
+}
+void mostrarL()
+{
+	cout << "*    " << endl;
+	cout << "*    " << endl;
+	cout << "*    " << endl;
+	cout << "*    " << endl;
+	cout << "*****" << endl;
+	cout << endl;
+}
+void mostrarA()
+{
+	cout << "******" << endl;
+	cout << "*    *" << endl;
+	cout << "******" << endl;
+	cout << "*    *" << endl;
+	cout << "*    *" << endl;
+	cout << endl;
+}
+void mostrarM()
+{
+	cout << "*    *" << endl;
+	cout << "* *  *" << endl;
+	cout << "* *  *" << endl;
+	cout << "*    *" << endl;
+	cout << "*    *" << endl;
+	cout << endl;
+}
