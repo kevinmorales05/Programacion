@@ -1,0 +1,29 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+void producto();
+
+int main()
+{
+	
+	producto();
+
+	return 0;
+}
+
+void producto()
+{
+	int resto1, resto2, resto3, valor;
+	for (int i = 100; i < 1000; i++)
+	{
+		resto3 = i % 10;
+		resto2 = (i / 10) % 10;
+		resto1 = (i / 100) % 10;
+		valor = pow(resto1, 3) + pow(resto2, 3) + pow(resto3, 3);
+			if (valor == i)
+			{
+				cout << "Este numero cumple con el criterio: " << i << endl;
+			}
+	}
+
+}
