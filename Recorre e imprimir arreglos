@@ -1,0 +1,64 @@
+#include<iostream>
+using namespace std;
+
+const int DIM = 10;
+int tTabla[DIM];
+
+
+int main() {
+
+	const int DIM = 10;
+	typedef int tTabla[DIM];
+	tTabla i = { 1,2,3,4,5 };
+
+	for (int j = 0; j < DIM; j++)
+	{
+		cout << i[j] << endl;
+	
+	}
+
+
+
+
+
+
+	return 0;
+}
+
+
+//con tipos enumerados
+#include<iostream>
+using namespace std;
+
+const int DIM = 10;
+int tTabla[DIM];
+
+
+int main() {
+
+	const int colores = 3;
+	typedef enum { rojo, verde, azul } tRGB;
+	typedef int tColor[colores];
+	tColor color;
+
+
+	cout << "Cantidad de rojo (0-255): " << endl;
+	cin >> color[rojo];
+	cout << "Cantidad de verde (0-255): " << endl;
+	cin >> color[verde];
+	cout << "Cantidad de azul (0-255): " << endl;
+	cin >> color[azul];
+
+	for (int j = 0; j < colores; j++)
+	{
+		cout << color[j] << endl;
+	
+	}
+
+
+
+
+
+
+	return 0;
+}
