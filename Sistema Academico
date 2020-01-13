@@ -1,0 +1,96 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+//declaracion de constantes y tipos
+const int MAX = 10;
+typedef struct {
+	string nombre;
+	string apellidos;
+	int edad;
+	string nif;
+	double nota;
+} tEstudiante;
+typedef tEstudiante tArray[MAX];
+typedef struct {
+	tArray elementos;
+	int contador;
+} tLista;
+
+//prototipos van despues de los tipos globales
+
+int menu();
+void cargar(tLista &lista, bool &ok);//carga del archivo
+void guardar(const tLista &lista);//guarda en el archivo
+void leerEstudiante(tEstudiante &estudiante);
+void insertarEstudiante( tLista &lista, tEstudiante estudiante, bool &ok);//insertar un nuevo estudiante en la lista
+void eliminarEstudiante(tLista &lista, int pos, bool &ok);//eliminar estudiante en esta posicion
+string nombreCompleto(tEstudiante estudiante);
+void calificar(tLista &lista);//notas de los estudiantes
+double mediaClase(const tLista &lista);//nota media
+int mayorNota(const tLista &lista);//indice del estudiante con mayor nota
+void mostrarEstudiante(tEstudiante estudiante);
+void listado(const tLista &lista, double media, int mayor);//listado de la clase
+
+
+
+
+int main()
+{
+	
+
+
+
+
+
+	
+	return 0;
+}
+
+
+int menu() {
+	int op;
+	do {
+	
+		cout << "1 - Añadir un nuevo estudiante" << endl;
+		cout << "2 - Eliminar a un estudiante" << endl;
+		cout << "3 - Calificar a los estudiantes" << endl;
+		cout << "4 - Listado de estudiantes" << endl;
+		cout << "0 - Salir" << endl;
+		cin >> op;
+	} while ((op < 0) || (op > 4));
+
+
+}
+
+void cargar(tLista& lista, bool& ok) {
+	tEstudiante estudiante; //variable auxiliar para leer
+	ifstream archivo;
+	char aux;
+	lista.contador = 0;//inicializamos la lista
+	archivo.open("clase.txt");
+	if (!archivo.open()) {
+		ok = false;
+	}
+	else {
+		ok = true;
+		getline(archivo, estudiante.nombre);//leemos el primer nombre
+		while ((estudiante.nombre != "XXX") && (lista.contador < MAX)) {
+		
+			getline(archivo, estudiante.apellidos);
+			archivo >> estudiante.edad;
+			archivo >> estudiante.nif;
+			archivo >> estudiante.nota;
+			archivo.get(aux); //saltamos el intro
+			lista.elementos[lista.contador] = estudiante; //al final
+			lista.contador++;
+			getline(archivo, estudiante.nombre);// siguiente nombre
+			//si hya mas de MAX estudiantes, ignoramos el resto
+		
+		
+		}
+		archivo.close();
+	}
+
+}
