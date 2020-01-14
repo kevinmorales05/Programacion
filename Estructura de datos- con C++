@@ -1,0 +1,286 @@
+#include <iostream>
+#include <string>
+using namespace std;
+#include <fstream>
+#include <iomanip>
+#include <locale>
+
+const int MAX = 100;
+typedef struct {
+	string nombre;
+	string apellidos;
+	int edad;
+	string nif;
+	double nota;
+} tEstudiante;
+typedef tEstudiante tArray[MAX];
+typedef struct {
+	tArray elementos;
+	int contador;
+} tLista;
+
+// Prototipos
+int menu(); // Men� del programa - devuelve la opci�n elegida
+void cargar(tLista& lista, bool& ok); // Carga el archivo en la lista
+void guardar(const tLista& lista); // Guarda la lista en el archivo
+void leerEstudiante(tEstudiante& estudiante); // Lee los datos
+void insertarEstudiante(tLista& lista, tEstudiante estudiante, bool& ok); // Inserta un nuevo estudiante en la lista
+void eliminarEstudiante(tLista& lista, int pos, bool& ok);
+// Elimina el estudiante en esa posici�n
+string nombreCompleto(tEstudiante estudiante);
+void calificar(tLista& lista); // Notas de los estudiantes
+double mediaClase(const tLista& lista); // Nota media de la clase
+int mayorNota(const tLista& lista);
+// �ndice del estudiante con mayor nota
+void mostrarEstudiante(tEstudiante estudiante);
+void listado(const tLista& lista, double media, int mayor); // Lista de la clase
+// mayor es el �ndice del estudiante con mejor nota
+
+int main() {
+	setlocale(LC_ALL, "Spanish");
+	tLista lista;
+	tEstudiante estudiante;
+	bool exito;
+	int op, pos;
+
+	cargar(lista, exito);
+
+	if (!exito) {
+		cout << "No se ha podido cargar la lista!" << endl;
+	}
+	else {
+		do { // El bucle do evita tener que leer antes la primera opci�n
+			op = menu();
+			switch (op) {
+			case 1:
+			{
+				leerEstudiante(estudiante);
+				insertarEstudiante(lista, estudiante, exito);
+				if (!exito) {
+					cout << "Lista llena: imposible insertar" << endl;
+				}
+			}
+			break;
+			case 2:
+			{
+				cout << "Posici�n: ";
+				cin >> pos;
+				eliminarEstudiante(lista, pos - 1, exito);
+				if (!exito) {
+					cout << "Elemento inexistente!" << endl;
+				}
+			}
+			break;
+			case 3:
+			{
+				calificar(lista);
+			}
+			break;
+			case 4:
+			{
+				listado(lista, mediaClase(lista), mayorNota(lista));
+			}
+			}
+		} while (op != 0);
+
+		guardar(lista);
+	}
+
+	return 0;
+}
+
+int menu() {
+	int op;
+
+	do {
+		cout << "1 - A�adir un nuevo estudiante" << endl;
+		cout << "2 - Eliminar un estudiante" << endl;
+		cout << "3 - Calificar a los estudiantes" << endl;
+		cout << "4 - Listado de estudiantes" << endl;
+		cout << "0 - Salir" << endl;
+		cout << "Opci�n: ";
+		cin >> op;
+	} while ((op < 0) || (op > 4));
+
+	return op;
+}
+
+void cargar(tLista& lista, bool& ok) {
+	tEstudiante estudiante;
+	ifstream archivo;
+	char aux;
+
+	lista.contador = 0; // Inicializamos la lista
+	archivo.open("clase.txt");
+	if (!archivo.is_open()) {
+		ok = false;
+	}
+	else {
+		ok = true;
+		getline(archivo, estudiante.nombre); // Leemos el primer nombre
+		while ((estudiante.nombre != "XXX") && (lista.contador < MAX)) {
+			getline(archivo, estudiante.apellidos);
+			archivo >> estudiante.edad;
+			archivo >> estudiante.nif;
+			archivo >> estudiante.nota;
+			archivo.get(aux); // Saltamos el Intro
+			lista.elementos[lista.contador] = estudiante; // Al final
+			lista.contador++;
+			getline(archivo, estudiante.nombre); // Siguiente nombre
+		} // Si hay m�s de MAX estudiantes, ignoramos el resto
+		archivo.close();
+	}
+}
+
+void guardar(const tLista& lista) {
+	ofstream archivo;
+
+	archivo.open("clase.txt");
+	for (int i = 0; i < lista.contador; i++) {
+		archivo << lista.elementos[i].nombre << endl;
+		archivo << lista.elementos[i].apellidos << endl;
+		archivo << lista.elementos[i].edad << endl;
+		archivo << lista.elementos[i].nif << endl;
+		archivo << lista.elementos[i].nota << endl;
+	}
+	archivo << "XXX" << endl; // Centinela final
+	archivo.close();
+}
+
+void leerEstudiante(tEstudiante& estudiante) {
+	cin.ignore();
+	cout << "Nombre: ";
+	getline(cin, estudiante.nombre);
+	cout << "Apellidos: ";
+	getline(cin, estudiante.apellidos);
+	cout << "Edad: ";
+	cin >> estudiante.edad;
+	cout << "NIF: ";
+	cin >> estudiante.nif;
+	estudiante.nota = -1; // Sin calificar de momento
+	cin.sync(); // Descartamos cualquier entrada pendiente
+}
+
+void insertarEstudiante(tLista& lista, tEstudiante estudiante,
+	bool& ok) {
+
+	ok = true;
+	if (lista.contador == MAX) {
+		ok = false;
+	}
+	else {
+		lista.elementos[lista.contador] = estudiante;
+		// Insertamos al final
+		lista.contador++;
+	}
+}
+
+void eliminarEstudiante(tLista& lista, int pos, bool& ok) {
+	// Espera el �ndice del elemento en pos
+
+	if ((pos < 0) || (pos > lista.contador - 1)) {
+		ok = false; // Elemento inexistente
+	}
+	else {
+		ok = true;
+		for (int i = pos; i < lista.contador - 1; i++) {
+			lista.elementos[i] = lista.elementos[i + 1];
+		}
+		lista.contador--;
+	}
+}
+
+string nombreCompleto(tEstudiante estudiante) {
+	return estudiante.nombre + " " + estudiante.apellidos;
+}
+
+void calificar(tLista& lista) {
+
+	for (int i = 0; i < lista.contador; i++) {
+		cout << "Nota del estudiante "
+			<< nombreCompleto(lista.elementos[i]) << ": ";
+		cin >> lista.elementos[i].nota;
+	}
+}
+
+double mediaClase(const tLista& lista) {
+	double total = 0.0;
+	for (int i = 0; i < lista.contador; i++) {
+		total = total + lista.elementos[i].nota;
+	}
+	return total / lista.contador;
+}
+
+int mayorNota(const tLista& lista) {
+	double max = 0;
+	int pos = 0;
+	for (int i = 0; i < lista.contador; i++) {
+		if (lista.elementos[i].nota > max) {
+			max = lista.elementos[i].nota;
+			pos = i;
+		}
+	}
+	return pos;
+}
+
+void mostrarEstudiante(tEstudiante estudiante) {
+	cout << setw(38) << left << nombreCompleto(estudiante);
+	cout << estudiante.nif << " ";
+	cout << setw(2) << right << estudiante.edad << " a�os ";
+	cout << fixed << setprecision(1) << estudiante.nota;
+}
+
+void listado(const tLista& lista, double media, int mayor) {
+	for (int i = 0; i < lista.contador; i++) {
+		cout << setw(3) << right << i + 1 << ": ";
+		mostrarEstudiante(lista.elementos[i]);
+		if (i == mayor) {
+			cout << " <<< Mayor nota!";
+		}
+		cout << endl;
+	}
+	cout << "Media de la clase: " << fixed << setprecision(1)
+		<< media << endl << endl;
+}
+
+
+
+//Archivo de texto
+/*
+JOse luis
+garcia perez
+25
+154548478
+9
+andres juan
+paez solorzano
+26
+154548479
+8
+Estefania Rafaela
+Ponce Enriquez
+19
+154548472
+8.5
+Daniela Emilia
+Quel Rodriguez
+18
+154548472
+9.6
+Juana Desiree
+Figueroa Rodriguez
+27
+154548472
+7.8
+Kevin Daniel
+Morales Estrella
+25
+1723017768
+10
+XXX
+
+
+*/
+
+
+
