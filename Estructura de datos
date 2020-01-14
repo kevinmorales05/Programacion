@@ -1,0 +1,310 @@
+// abstraccion procedimental.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
+//Estructuras de datos
+
+#include <iostream>
+#include <string>
+#include <iomanip>
+using namespace std;
+
+
+//declaracion de constantes y tipos
+const int MAX = 10;
+typedef struct {
+	string nombre;
+	string apellidos;
+	int edad;
+	string nif;
+	double nota;
+} tEstudiante;
+typedef tEstudiante tArray[MAX];
+typedef struct {
+	tArray elementos;
+	int contador;
+} tLista;
+
+//prototipos van despues de los tipos globales
+
+int menu();
+void cargar(tLista &lista, bool &ok);//carga del archivo
+void guardar(const tLista &lista);//guarda en el archivo
+void leerEstudiante(tEstudiante &estudiante);
+void insertarEstudiante( tLista &lista, tEstudiante estudiante, bool &ok);//insertar un nuevo estudiante en la lista
+void eliminarEstudiante(tLista &lista, int pos, bool &ok);//eliminar estudiante en esta posicion
+string nombreCompleto(tEstudiante estudiante);
+void calificar(tLista &lista);//notas de los estudiantes
+double mediaClase(const tLista &lista);//nota media
+int mayorNota(const tLista &lista);//indice del estudiante con mayor nota
+void mostrarEstudiante(tEstudiante estudiante);
+void listado(const tLista &lista, double media, int mayor);//listado de la clase
+
+
+
+
+int main()
+{
+
+
+	tLista lista;
+	tEstudiante estudiante;
+	bool exito;
+	int op, pos;
+
+	cargar(lista, exito);
+
+
+	do {
+		int menu();
+		switch (op)
+		{
+
+		case 1:
+			leerEstudiante(tEstudiante & estudiante);
+			insertarEstudiante(lista, estudiante, exito);
+			if (!exito) {
+				cout << "Lista llena, imposible insertar" << endl;
+			}
+
+			break;
+		case 2:
+			cout << "Posición ";
+			eliminarEstudiante(lista, pos - 1, exito);
+			if (!exito) {
+				cout << "Elemento inexistente!" << endl;
+
+			}
+
+			break;
+		case 3:
+			void calificar(lista);
+
+			break;
+		case 4:
+			listado(lista, mediaClase(lista), mayorNota(lista));
+
+			break;
+		case 0:
+			cout << "Gracias por utilizar el sistema académico" << endl;
+			break;
+		}
+
+	} while > (op != 0);
+	guardar(lista);
+
+
+
+
+
+
+
+
+
+	}
+	return 0;
+}
+
+
+int menu() {
+	int op;
+	do {
+	
+		cout << "1 - Añadir un nuevo estudiante" << endl;
+		cout << "2 - Eliminar a un estudiante" << endl;
+		cout << "3 - Calificar a los estudiantes" << endl;
+		cout << "4 - Listado de estudiantes" << endl;
+		cout << "0 - Salir" << endl;
+		cin >> op;
+	} while ((op < 0) || (op > 4));
+
+
+}
+
+void cargar(tLista& lista, bool& ok) {
+	tEstudiante estudiante; //variable auxiliar para leer
+	ifstream archivo;
+	char aux;
+	lista.contador = 0;//inicializamos la lista
+	archivo.open("clase.txt");
+	if (!archivo.open()) {
+		ok = false;
+	}
+	else {
+		ok = true;
+		getline(archivo, estudiante.nombre);//leemos el primer nombre
+		while ((estudiante.nombre != "XXX") && (lista.contador < MAX)) {
+		
+			getline(archivo, estudiante.apellidos);
+			archivo >> estudiante.edad;
+			archivo >> estudiante.nif;
+			archivo >> estudiante.nota;
+			archivo.get(aux); //saltamos el intro
+			lista.elementos[lista.contador] = estudiante; //al final
+			lista.contador++;
+			getline(archivo, estudiante.nombre);// siguiente nombre
+			//si hya mas de MAX estudiantes, ignoramos el resto
+		}
+		archivo.close();
+	}
+
+}
+
+void guardar(const tLista& lista) {
+
+	ofstream archivo;
+	archivo.open("clase.txt");
+	for (int i = 0; i < lista.contador;i++) {
+		archivo << lista.elementos[i].nombre << endl;
+		archivo << lista.elementos[i].apellidos << endl;
+		archivo << lista.elementos[i].edad << endl;
+		archivo << lista.elementos[i].nif << endl;
+		archivo << lista.elementos[i].nota << endl;
+	}
+	archivo << "XXX" << endl; //centinela final
+	archivo.close();
+
+
+
+}
+
+
+void leerEstudiante(tEstudiante& estudiante) {
+
+	cin.sync(); //descartar cualquier entrada pendiente
+	cout << "nombre: ";
+	getline(cin, estudiante.nombre);
+	cout << "Apellidos: ";
+	getline(cin, estudiante.apellidos);
+	cout << "Edad: ";
+	cin >> estudiante.edad;
+	cout << "NIF: ";
+	cin >> estudiante.nif;
+	estudiante.nota = -1; //sin calificar de momento
+	cin.sync(); // descartamos cualquier entrada pendiente
+}
+
+void insertarEstudiante(tLista& lista, tEstudiante estudiante, bool& ok) {
+
+	ok = true;
+	if (lista.contador == MAX) {
+	
+		ok = false;
+	}
+	else {
+	
+		lista.elementos[lista.contador] = estudiante;
+		//insertamos al final
+		lista.contador++;
+	}
+}
+
+void eliminarEstudiante(tLista& lista, int pos, bool& ok) {
+//esta funcion espera el indice del elemento que vamos a eliminar
+	if ( (pos < 0) || (pos > lista.contador - 1))
+	{
+	
+		ok = false; // elemento inexistente
+	
+	}
+	else {
+		ok = true;
+		for (int i = pos; i < lista.contador - 1; i++)
+		{
+			lista.elementos[i] = lista.elementos[i + 1];
+		
+		}
+		lista.contador--;
+	
+	}
+
+}
+
+string nombreCompleto(tEstudiante estudiante)
+{
+	return estudiante.nombre + " " + estudiante.apellidos;
+
+
+}
+
+void calificar(tLista& lista) {
+
+	for (int i = 0; i < lista.contador; i++)
+	{
+		cout << "Nota del estudiante " << nombreCompleto(lista.elementos[i]) << " : ";
+		cin >> lista.elementos[i].nota;
+	}
+}
+
+
+double mediaClase(const tLista& lista)
+{
+	double suma = 0;
+	for (int i = 0; i < lista.contador; i++)
+	{
+		
+		suma = suma + lista.elementos[i].nota;
+
+	}
+	double media;
+	media = suma / lista.contador;
+	return media;
+}
+
+
+int mayorNota(const tLista& lista)
+{
+
+	double max = 0;
+	int pos = 0;
+
+
+	for (int i= 0; i < lista.contador; i++)
+	{
+		if (lista.elementos[i].nota > max) {
+			max = lista.elementos[i].nota;
+			pos = i;
+
+
+		}
+
+
+	}
+
+	return pos;
+}
+
+	
+
+void mostrarEstudiante(tEstudiante estudiante)
+{
+
+	cout << setw(35) << left << nombreCompleto(estudiante);
+	cout << estudiante.nif << " ";
+	cout << setw(2) << estudiante.edad << " años ";
+	cout << fixed << setprecision(1) << estudiante.nota;
+
+
+}
+
+
+
+
+
+void listado(const tLista& lista, double media, int mayor) {
+
+
+	for (int i = 0; i < lista.contador; i++) {
+	
+		cout << setw(3) << i << " : ";
+		mostrarEstudiante(lista.elementos[i]);
+		if (i == mayor) {
+			cout << " <<< Mayor nota!";
+		}
+		cout << endl;
+	}
+
+	cout << "Media de la clase"<< fixed << setprecision(1) << media << endl;
+
+
+
+
+
+}
