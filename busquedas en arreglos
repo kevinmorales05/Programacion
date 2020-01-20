@@ -1,0 +1,287 @@
+// FIBONACCI CON ARREGLOS.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
+//
+/*
+#include <iostream>
+using namespace std;
+
+
+const int N = 50;
+typedef long long int tArreglo[N];
+
+
+
+int main()
+{
+	tArreglo fib;
+	fib[0] = 1;
+	fib[1] = 1;
+	
+
+
+	for (int i = 2; i < N; i++) {
+		fib[i] = fib[i - 1] + fib[i - 2];
+	}
+	for (int i = 0; i < N; i++) {
+		cout << fib[i] << " "; 
+	}
+
+
+	return 0;
+
+}
+
+
+//alamcenar los numero de fibonacci hasta el 50 en un arrglo
+
+*/
+
+//contar valores con k digitos, recorrer una lista y contar cuantos digitos tiene cada elemento
+
+
+/*  
+//recorrdios en arreglos
+#include <iostream>
+using namespace std;
+#include<cstdlib>//aleatorio entre 0 y 32766(tamaño maximo de short int) para la funcion rand
+//srand() inicia la secuencia de numero aleatorios, usa entero para usar como semilla
+#include<ctime>
+
+
+int digitos(int dato);
+
+int main()
+{
+	
+	const int N = 100;
+	typedef long long int tNum[N];
+
+	tNum numeros;
+	const int DIG = 5;
+	typedef  int tDig[DIG];
+	tDig numDig = { 0 };
+
+
+
+	for (int i=0; i < NUM; i++)//creamos la secuencia
+	{
+		numero[i] = rand();//ENTRE 0 Y 32766
+	}
+	for (int i = 0; i < NUM; i++)//RECORRreamos la secuencia
+	{
+		//recorremos la secuencia
+		numDig[digitos(numeros[i]) - 1]++;
+	}
+
+	for (int i = 0; i < DIG; i++)
+	{
+		//recorremos la secuencia DE CONTADORES
+		cout << "De " << i + 1 << " dig = " << numDig[i] << endl;
+	}
+
+	return 0;
+
+}
+int digitos(int dato) {
+
+
+
+	int num_digitos = 1;
+	while (dato >= 10) {
+		dato = dato / 10;
+		num_digitos++;
+		
+			return num_digitos;
+	}
+
+
+}
+*/
+
+
+//BUSQUEDAS EN ARREGLOS
+
+//SI TOSDA LAS POSICIONES ESTAN OCIUPADAS
+/*
+const int N = 10;
+int lista[N] = { 2,5,1,4,5,89,15,15,2,15 };
+int buscado;
+bool encontrado = false;
+cout << "Valor a buscar: ";
+cin >> buscado;
+int pos = 0;
+while ((pos < N) && (!encontrado)) {
+
+if (lista[pos]== buscadp)
+}
+
+*/
+
+/*  
+//PRIMER VALOR POR ENCIMA DE UN UMBRAL
+#include <iostream>
+using namespace std;
+#include <fstream>
+
+const int N = 100;
+typedef double tArray[N];
+typedef struct {
+	tArray elementos;
+	int contador;
+} tLista;
+
+//funcion cargar
+void cargar(tLista& lista, bool& ok);
+
+int main() {
+
+
+
+	tLista lista;
+	bool ok;
+	cargar(lista, ok);
+	if (!ok) {
+		cout << "Error: no hay archivo o demasiados datos" << endl;
+
+	}
+
+	else {
+	
+		double umbral;
+		cout << "Valor umbral: "; cin >> umbral;
+		bool encontrado = false;
+		int pos = 0;
+
+		while ((pos < lista.contador) && (!encontrado)) {
+		
+			if (lista.elementos[pos] > umbral) {
+				encontrado = true;
+
+			}
+			else {
+				pos++;
+
+			}
+			if (encontrado) {
+				cout << "Valor en pos. " << pos + 1 << "  (" << lista.elementos[pos] << endl;
+			
+			}
+			else {
+				cout << "NO ENCONTRADO" << endl;
+			}
+		}
+	}
+
+	return 0;
+}
+
+
+void cargar(tLista& lista, bool& ok) {
+	ifstream archivo;
+	double dato;
+	bool abierto = true, overflow = false;
+	lista.contador = 0;
+	archivo.open("datos.txt");
+	if (!archivo.is_open()) {
+		abierto = false;
+
+	}
+	else {
+
+		archivo >> dato;
+		while ((dato >= 0) && (!overflow)) {
+			if (lista.contador == N)
+			{
+				overflow = true; //demaciados!!
+			}
+			else {
+				lista.elementos[lista.contador] = dato;
+				lista.contador++;
+				archivo >> dato;
+			}
+		
+		}
+		archivo.close();
+	
+	}
+	ok = abierto && !overflow;
+
+
+
+}
+
+*/
+
+
+//RECORRIDO Y BUSQUEDAS EN CADENAS DE CARACTERES
+// con esto recorro
+/*
+#include <iostream>
+using namespace std;
+#include <string>
+
+
+
+int main() {
+
+
+	string cadena, inversa = " ";
+	int pos = 0;
+	char car;
+	getline(cin, cadena);
+	while (pos < cadena.size()) {
+
+
+		car = cadena.at(pos);//devuelve la letra de la posicion
+		// car= cadena[pos] es lo mismo que lo de arriba
+		inversa = car + inversa; // insertar car al principio
+		pos++;
+	}
+	return 0;
+}
+*/
+
+//PARA BUSCAR
+#include <iostream>
+using namespace std;
+#include <string>
+
+
+
+int main() {
+
+
+	string cadena;
+	
+	char buscado;
+	int pos;
+	bool encontrado;
+	//lectura de la cadena
+	cout << "introduce el caracter a buscar: ";
+	cin >> buscado;
+	pos = 0;
+	encontrado = false;
+	while ((pos < cadena.size()) && (!encontrado)) {
+		if (cadena.at(pos) == buscado) {
+			encontrado = true;
+
+		}
+		else {
+			pos++;
+		}
+	
+	
+	}
+
+	if (encontrado)
+	{
+		cout << "El elemento encontrado esta en la posicion" << pos << endl;
+	}
+	/*
+		car = cadena.at(pos);//devuelve la letra de la posicion
+		// car= cadena[pos] es lo mismo que lo de arriba
+		inversa = car + inversa; // insertar car al principio
+		pos++;
+		*/
+	}
+	return 0;
+}
