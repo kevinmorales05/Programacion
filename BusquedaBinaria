@@ -1,0 +1,82 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+const int n = 100;
+typedef int tArray[n];
+typedef struct {
+	tArray elementos;
+	int cont;
+}tLista;
+
+int buscar(tLista lista, int buscado);
+
+
+int main()
+{
+	int dato;
+	tLista lista;
+
+	ifstream archivo;
+	lista.cont = 0;
+
+	archivo.open("ordenados.txt");
+	archivo >> dato;
+
+	while ((lista.cont < n) && (dato != -1)) {
+		lista.elementos[lista.cont] = dato;
+		lista.cont++;
+		archivo >> dato;
+	}
+
+	archivo.close();
+
+
+
+	for (int i = 0; i < lista.cont; i++) {
+
+		cout << lista.elementos[i] << "  ";
+	}
+	cout << endl;
+	int buscado, pos;
+	cout << "Valor a buscar:  ";
+	cin >> buscado;
+
+	pos = buscar(lista, buscado);
+	if (pos != -1) {
+		cout << "Encontrado en la posicion " << pos + 1 << endl;
+	}
+	else {
+		cout << "No encontrado" << endl;
+	}
+
+	return 0;
+}
+//esta es la implementacion de la busqueda binaria
+	
+int buscar(tLista lista, int buscado) {
+
+	int pos = -1, ini = 0,fin = lista.cont - 1, mitad;
+	bool encontrado = false;
+	while ((ini <= fin) && (!encontrado)) {
+	
+		mitad = (ini + fin) / 2; //division entera
+		if (buscado == lista.elementos[mitad]) {
+			encontrado = true;
+
+		}
+		else if (buscado < lista.elementos[mitad]) {
+			fin = mitad - 1;
+
+		}
+		else {
+			ini = mitad + 1;
+		}
+	}
+	if (encontrado) {
+		pos = mitad;
+
+	}
+
+	return pos;
+}
